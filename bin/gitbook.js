@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-var Q = require('q');
+// var Q = require('q');
 var _ = require('lodash');
 var path = require('path');
 var program = require('commander');
@@ -9,7 +9,7 @@ var color = require('bash-color');
 
 var pkg = require('../package.json');
 var manager = require('../lib');
-var tags = require('../lib/tags');
+// var tags = require('../lib/tags');
 var commands = require('../lib/commands');
 
 // Which book is concerned?
@@ -17,14 +17,14 @@ var bookRoot = parsedArgv._[1] || process.cwd();
 
 function runPromise(p) {
     return p
-    .then(function() {
-        process.exit(0);
-    }, function(err) {
-        console.log('');
-        console.log(color.red(err.toString()));
-        if (program.debug || process.env.DEBUG) console.log(err.stack || '');
-        process.exit(1);
-    });
+        .then(function() {
+            process.exit(0);
+        }, function(err) {
+            console.log('');
+            console.log(color.red(err.toString()));
+            if (program.debug || process.env.DEBUG) console.log(err.stack || '');
+            process.exit(1);
+        });
 }
 
 function printGitbookVersion(v) {
@@ -42,10 +42,10 @@ program
         console.log('CLI version:', pkg.version);
         runPromise(
             manager.ensure(bookRoot, program.gitbook)
-            .then(function(v) {
-                console.log('GitBook version:', printGitbookVersion(v));
-                process.exit(0);
-            })
+                .then(function(v) {
+                    console.log('GitBook version:', printGitbookVersion(v));
+                    process.exit(0);
+                })
         );
     });
 
@@ -80,9 +80,9 @@ program
     .action(function(){
         runPromise(
             manager.ensure(bookRoot, program.gitbook)
-            .then(function(v) {
-                console.log('GitBook version is', printGitbookVersion(v));
-            })
+                .then(function(v) {
+                    console.log('GitBook version is', printGitbookVersion(v));
+                })
         );
     });
 
@@ -92,18 +92,18 @@ program
     .action(function(){
         runPromise(
             manager.available()
-            .then(function(available) {
-                console.log('Available GitBook Versions:');
-                console.log('');
-                console.log('    ', available.versions.join(', '));
-                console.log('');
-                console.log('Tags:');
-                console.log('');
-                _.each(available.tags, function(version, tagName) {
-                    console.log('    ', tagName, ':', version);
-                });
-                console.log('');
-            })
+                .then(function(available) {
+                    console.log('Available GitBook Versions:');
+                    console.log('');
+                    console.log('    ', available.versions.join(', '));
+                    console.log('');
+                    console.log('Tags:');
+                    console.log('');
+                    _.each(available.tags, function(version, tagName) {
+                        console.log('    ', tagName, ':', version);
+                    });
+                    console.log('');
+                })
         );
     });
 
@@ -115,10 +115,10 @@ program
 
         runPromise(
             manager.install(version)
-            .then(function(installedVersion) {
-                console.log('');
-                console.log(color.green('GitBook '+installedVersion+' has been installed'));
-            })
+                .then(function(installedVersion) {
+                    console.log('');
+                    console.log(color.green('GitBook '+installedVersion+' has been installed'));
+                })
         );
     });
 
@@ -131,9 +131,9 @@ program
 
         runPromise(
             manager.link(version, folder)
-            .then(function() {
-                console.log(color.green('GitBook '+version+' point to '+folder));
-            })
+                .then(function() {
+                    console.log(color.green('GitBook '+version+' point to '+folder));
+                })
         );
     });
 
@@ -143,9 +143,9 @@ program
     .action(function(version){
         runPromise(
             manager.uninstall(version)
-            .then(function() {
-                console.log(color.green('GitBook '+version+' has been uninstalled.'));
-            })
+                .then(function() {
+                    console.log(color.green('GitBook '+version+' has been uninstalled.'));
+                })
         );
     });
 
@@ -155,14 +155,14 @@ program
     .action(function(tag){
         runPromise(
             manager.update(tag)
-            .then(function(version) {
-                if (!version) {
-                    console.log('No update found!');
-                } else {
-                    console.log('');
-                    console.log(color.green('GitBook has been updated to '+version));
-                }
-            })
+                .then(function(version) {
+                    if (!version) {
+                        console.log('No update found!');
+                    } else {
+                        console.log('');
+                        console.log(color.green('GitBook has been updated to '+version));
+                    }
+                })
         );
     });
 
@@ -172,8 +172,8 @@ program
     .action(function(){
         runPromise(
             manager.ensureAndLoad(bookRoot, program.gitbook)
-            .get('commands')
-            .then(commands.help)
+                .get('commands')
+                .then(commands.help)
         );
     });
 
@@ -186,9 +186,9 @@ program
 
         runPromise(
             manager.ensureAndLoad(bookRoot, program.gitbook)
-            .then(function(gitbook) {
-                return commands.exec(gitbook.commands, commandName, args, kwargs);
-            })
+                .then(function(gitbook) {
+                    return commands.exec(gitbook.commands, commandName, args, kwargs);
+                })
         );
     });
 

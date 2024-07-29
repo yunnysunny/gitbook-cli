@@ -11,9 +11,9 @@ describe('Versions', function() {
 
         before(function() {
             return manager.available()
-            .then(function(versions) {
-                result = versions;
-            });
+                .then(function(versions) {
+                    result = versions;
+                });
         });
 
         it('should correctly return a list of versions', function() {
@@ -32,9 +32,9 @@ describe('Versions', function() {
 
         before(function() {
             return manager.install('2.0.0')
-            .then(function(version) {
-                result = version;
-            });
+                .then(function(version) {
+                    result = version;
+                });
         });
 
         it('should correctly return the installed version', function() {
@@ -46,18 +46,18 @@ describe('Versions', function() {
     describe('.ensure()', function() {
         it('should correctly return installed version', function() {
             return manager.ensure(__dirname)
-            .then(function(v) {
-                v.should.have.properties('version', 'path');
-                v.version.should.equal('2.0.0');
-            });
+                .then(function(v) {
+                    v.should.have.properties('version', 'path');
+                    v.version.should.equal('2.0.0');
+                });
         });
 
         it('should correctly install version specified', function() {
             return manager.ensure(path.resolve(__dirname, 'fixtures/book1'))
-            .then(function(v) {
-                v.should.have.properties('version', 'path');
-                v.version.should.equal('3.0.0-pre.2');
-            });
+                .then(function(v) {
+                    v.should.have.properties('version', 'path');
+                    v.version.should.equal('3.0.0-pre.2');
+                });
         });
     });
 
@@ -96,38 +96,38 @@ describe('Versions', function() {
 
         it('should correctly return latest version as default one', function() {
             return manager.get(__dirname)
-            .then(function(version) {
-                version.name.should.equal('latest');
-            });
+                .then(function(version) {
+                    version.name.should.equal('latest');
+                });
         });
     });
 
     describe('.ensureAndLoad()', function() {
         it('should correctly return gitbook instance', function() {
             return manager.ensureAndLoad(__dirname)
-            .then(function(gitbook) {
-                gitbook.should.be.an.Object();
-                gitbook.should.have.properties('commands');
-                gitbook.commands.should.be.an.Array();
-            });
+                .then(function(gitbook) {
+                    gitbook.should.be.an.Object();
+                    gitbook.should.have.properties('commands');
+                    gitbook.commands.should.be.an.Array();
+                });
         });
     });
 
     describe('.uninstall()', function() {
         it('should correctly remove a specific version', function() {
             return manager.uninstall('2.0.0')
-            .then(function() {
-                var result = manager.versions();
-                result.should.have.lengthOf(2);
-            });
+                .then(function() {
+                    var result = manager.versions();
+                    result.should.have.lengthOf(2);
+                });
         });
 
         it('should correctly remove a version by tag', function() {
             return manager.uninstall('latest')
-            .then(function() {
-                var result = manager.versions();
-                result.should.have.lengthOf(1);
-            });
+                .then(function() {
+                    var result = manager.versions();
+                    result.should.have.lengthOf(1);
+                });
         });
     });
 });
